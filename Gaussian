@@ -1,0 +1,117 @@
+//Solving linear equations with Gaussian elimination 
+//
+//	   2y + z = -8
+//	 x - 2y - 3z = 0
+//	 -x + y	+ 2z = 3
+
+array A =	
+0., 2., 1., -8.,
+1., -2., -3., 0.,
+-1., 1., 2., 3.
+
+array V = 
+0, 0, 0	//vector for results
+
+array N = 
+"x", "y", "z"	//vector for variable names
+
+
+cols = 4	//number of columns of A matrix
+
+/****************************************************/
+
+function Gaussian ()
+{
+	n = dec( cols)
+	i = 0
+
+	while i < n
+	{
+		 // Search for maximum in this column
+		maxEI = abs( A[ i * cols + i ] )
+		maxRow = i
+		k = i + 1
+
+		while k < n
+		{
+			if abs( A[ k * cols + i] ) > maxEI 
+			{
+				maxEl = abs( A[ k * cols + i] )
+				maxRow = k
+			}
+			k= inc( k )
+		}
+
+		// Swap maximum row with current row (column by column)
+		k = i
+
+		while k < n + 1
+		{
+			tmp = A [ maxRow * cols + k]
+			A [ maxRow * cols + k] = A [ i * cols + k] 
+			A [ i * cols + k] = tmp
+
+			k= inc( k )
+		}
+
+		// Make all rows below this one 0 in current column
+		k = i + 1
+
+		while k < n 
+		{
+			c = -A[ k * cols + i] / A[ i * cols + i]
+
+			j = i
+			while j < n + 1
+			{
+				if i == j	A[ k * cols + j] = 0
+				else		A[ k * cols + j] = A[ k * cols + j] + c * A[ i * cols + j] 
+					 
+				j= inc( j )
+			}
+
+			k= inc( k )
+		}
+
+		i = inc( i)
+	}
+
+	// Solve equation Ax=b for an upper triangular matrix A
+	i = n - 1
+
+	while i >= 0
+	{
+		V[ i] = A[ i * cols + n] / A[ i * cols + i]
+
+		k = i - 1
+
+		while k >= 0 
+		{
+			A[ k * cols + n] = A[ k * cols + n] - A[ k * cols + i] * V[ i] 
+
+			k= dec( k )
+		}
+
+		i = dec( i)
+	}
+}
+
+
+
+// Print results
+function Print ()
+{
+	n = dec( cols)
+	i = 0
+
+ 	println( "Gaussian elimination results:")
+
+	while i < n
+	{
+		println( N[ i] + " = " + V[ i])
+		i = inc( i)
+	}
+}
+
+Gaussian ()
+Print ()
