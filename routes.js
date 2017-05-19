@@ -6,7 +6,7 @@ app.get("/", function(req, res) {
 
 app.get("/account", function(req, res) {
     var accountMock = {
-        "username": "tihomir",
+        "username": "tc",
         "password": "1234",
         "twitter": "@tc"
     }
